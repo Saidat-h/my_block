@@ -1,4 +1,4 @@
-[16:50] CHING Abygaëlle
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>

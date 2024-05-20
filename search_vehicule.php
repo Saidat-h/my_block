@@ -1,4 +1,4 @@
-[16:53] CHING Abygaëlle
+
 <?php
 session_start(); // Démarrer la session
  

@@ -1,4 +1,4 @@
-[16:49] CHING Abygaëlle
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -125,16 +125,7 @@
         <div class="location">
             <img src="location.jpeg" alt="Image de notre emplacement">
         </div>
-        <!-- Formulaire de recherche de véhicule -->
-        <form id="searchForm">
-            <label for="vin">Entrez le VIN :</label>
-            <input type="text" id="vin" name="vin" required><br><br>
-            <input type="submit" value="Rechercher">
-        </form>
-        <!-- Div pour afficher les informations du véhicule -->
-        <div class="vehicle-info" id="vehicleInfo">
-            <!-- Les informations du véhicule seront affichées ici -->
-        </div>
+      
     </main>
     <footer>
         <p>&copy; 2024 Tous droits réservés</p>
