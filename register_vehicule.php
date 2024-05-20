@@ -1,19 +1,10 @@
-<?php
-session_start(); // Démarrer la session
-
-// Vérifier si l'utilisateur est connecté
-if (!isset($_SESSION['PROFILE']) || $_SESSION['PROFILE'] == null) {
-    // Rediriger vers la page de connexion
-    header("Location: index.php");
-    exit; // Arrêter l'exécution du script après la redirection
-}
-?>
+[16:50] CHING Abygaëlle
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enregistrer un véhicule</title>
+    <title>Rechercher un véhicule</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -25,10 +16,7 @@ if (!isset($_SESSION['PROFILE']) || $_SESSION['PROFILE'] == null) {
             display: block;
             margin-bottom: 5px;
         }
-        input[type="text"],
-        input[type="number"],
-        input[type="datetime-local"],
-        textarea {
+        input[type="text"] {
             width: 100%;
             padding: 8px;
             margin-bottom: 10px;
@@ -47,20 +35,149 @@ if (!isset($_SESSION['PROFILE']) || $_SESSION['PROFILE'] == null) {
         input[type="submit"]:hover {
             background-color: #45a049;
         }
+        .vehicle-info {
+            margin: 20px;
+        }
+        .vehicle-info p {
+            margin: 5px 0;
+        }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.6.1/dist/web3.min.js"></script>
 </head>
 <body>
-    <h1>Enregistrer un véhicule</h1>
-    <form action="tt_register.php" method="post">
-        <label for="date">Date et Heure :</label>
-        <input type="datetime-local" id="date" name="date" required><br><br>
-        <label for="vin">VIN :</label>
+    <h1>Rechercher un véhicule</h1>
+    <form id="searchForm">
+        <label for="vin">Entrez le VIN :</label>
         <input type="text" id="vin" name="vin" required><br><br>
-        <label for="kilometrage">Kilométrage :</label>
-        <input type="number" id="kilometrage" name="kilometrage" required><br><br>
-        <label for="info_complementaires">Informations complémentaires :</label>
-        <textarea id="info_complementaires" name="info_complementaires"></textarea><br><br>
-        <input type="submit" value="Enregistrer">
+        <input type="submit" value="Rechercher">
     </form>
+    <div class="vehicle-info" id="vehicleInfo">
+        <!-- Les informations du véhicule seront affichées ici -->
+    </div>
+ 
+    <script>
+        // Initialiser web3
+        if (typeof window.ethereum !== 'undefined' || typeof window.web3 !== 'undefined') {
+            window.web3 = new Web3(window.ethereum || window.web3.currentProvider);
+            window.ethereum.request({ method: 'eth_requestAccounts' });
+        } else {
+            window.web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'));
+        }
+ 
+        // Adresse et ABI du contrat CarRegistry
+        const contractAddress = 'VOTRE_ADRESSE_CONTRAT';
+        const contractABI = [
+            {
+                "constant": false,
+                "inputs": [
+                    {
+                        "name": "vin",
+                        "type": "string"
+                    }
+                ],
+                "name": "registerCar",
+                "outputs": [],
+                "payable": false,
+                "stateMutability": "nonpayable",
+                "type": "function"
+            },
+            {
+                "constant": false,
+                "inputs": [
+                    {
+                        "name": "vin",
+                        "type": "string"
+                    },
+                    {
+                        "name": "newMileage",
+                        "type": "uint256"
+                    },
+                    {
+                        "name": "timestamp",
+                        "type": "uint256"
+                    }
+                ],
+                "name": "updateMileage",
+                "outputs": [],
+                "payable": false,
+                "stateMutability": "nonpayable",
+                "type": "function"
+            },
+            {
+                "constant": true,
+                "inputs": [
+                    {
+                        "name": "vin",
+                        "type": "string"
+                    }
+                ],
+                "name": "getMileageHistory",
+                "outputs": [
+                    {
+                        "components": [
+                            {
+                                "name": "mileage",
+                                "type": "uint256"
+                            },
+                            {
+                                "name": "timestamp",
+                                "type": "uint256"
+                            }
+                        ],
+                        "name": "",
+                        "type": "tuple[]"
+                    }
+                ],
+                "payable": false,
+                "stateMutability": "view",
+                "type": "function"
+            }
+        ];
+ 
+        const contract = new window.web3.eth.Contract(contractABI, contractAddress);
+ 
+        // Gérer le formulaire de recherche
+        document.getElementById('searchForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const vin = document.getElementById('vin').value.trim();
+            if (vin.length === 0) {
+                alert('Veuillez entrer un VIN valide.');
+                return;
+            }
+            searchVehicle(vin);
+        });
+ 
+        async function searchVehicle(vin) {
+            try {
+                const accounts = await window.web3.eth.getAccounts();
+                const account = accounts[0];
+ 
+                // Appeler la fonction getMileageHistory du contrat pour récupérer l'historique des kilométrages
+                const mileageHistory = await contract.methods.getMileageHistory(vin).call({ from: account });
+ 
+                // Afficher les informations du véhicule
+                displayVehicleInfo(mileageHistory);
+            } catch (error) {
+                console.error('Erreur lors de la recherche du véhicule:', error);
+            }
+        }
+ 
+        function displayVehicleInfo(mileageHistory) {
+            const vehicleInfoDiv = document.getElementById('vehicleInfo');
+            if (mileageHistory.length === 0) {
+                vehicleInfoDiv.innerHTML = '<p>Aucun historique trouvé pour ce VIN.</p>';
+                return;
+            }
+ 
+            let html = '<h2>Historique des kilométrages :</h2>';
+            html += '<ul>';
+            mileageHistory.forEach(record => {
+                html += `<li><strong>Kilométrage :</strong> ${record.mileage}, <strong>Timestamp :</strong> ${new Date(record.timestamp * 1000).toLocaleString()}</li>`;
+            });
+            html += '</ul>';
+ 
+            vehicleInfoDiv.innerHTML = html;
+        }
+    </script>
 </body>
 </html>
