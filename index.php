@@ -81,9 +81,7 @@
         <ul>
             <li><a href="register_vehicule.php">Enregistrer un véhicule</a></li>
             <li><a href="search_vehicule.php">Rechercher un véhicule</a></li>
-            <li><a href="inscription.php">Inscription</a></li>
-            <li><a href="connexion.php">Connexion</a></li>
-            <li><a href="tt_deconnexion.php">Deconnexion</a></li>
+            
         </ul>
     </nav>
     <main>
