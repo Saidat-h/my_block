@@ -82,72 +82,48 @@ if (!isset($_SESSION['PROFILE']) || $_SESSION['PROFILE'] == null) {
             }
  
             const contractABI = [
-                {
-                    "constant": false,
-                    "inputs": [
-                        {
-                            "name": "vin",
-                            "type": "string"
-                        }
-                    ],
-                    "name": "registerCar",
-                    "outputs": [],
-                    "payable": false,
-                    "stateMutability": "nonpayable",
-                    "type": "function"
-                },
-                {
-                    "constant": false,
-                    "inputs": [
-                        {
-                            "name": "vin",
-                            "type": "string"
-                        },
-                        {
-                            "name": "newMileage",
-                            "type": "uint256"
-                        },
-                        {
-                            "name": "timestamp",
-                            "type": "uint256"
-                        }
-                    ],
-                    "name": "updateMileage",
-                    "outputs": [],
-                    "payable": false,
-                    "stateMutability": "nonpayable",
-                    "type": "function"
-                },
-                {
-                    "constant": true,
-                    "inputs": [
-                        {
-                            "name": "vin",
-                            "type": "string"
-                        }
-                    ],
-                    "name": "getMileageHistory",
-                    "outputs": [
-                        {
-                            "components": [
-                                {
-                                    "name": "mileage",
-                                    "type": "uint256"
-                                },
-                                {
-                                    "name": "timestamp",
-                                    "type": "uint256"
-                                }
-                            ],
-                            "name": "",
-                            "type": "tuple[]"
-                        }
-                    ],
-                    "payable": false,
-                    "stateMutability": "view",
-                    "type": "function"
-                }
-            ];
+                
+        {
+        "constant": false,
+        "inputs": [
+            {
+                "name": "vin",
+                "type": "string"
+            }
+        ],
+        "name": "registerCar",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "constant": false,
+        "inputs": [
+            {
+                "name": "vin",
+                "type": "string"
+            },
+            {
+                "name": "newMileage",
+                "type": "uint256"
+            },
+
+            {
+                "name": "timestamp",
+                "type": "uint256"
+
+            }
+
+        ],
+
+        "name": "updateMileage",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    ];
  
             const contractAddress = '0x878F4af3BF8bB4736715aA9d8131c855Dbbd15E1';
             const contract = new web3.eth.Contract(contractABI, contractAddress);

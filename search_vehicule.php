@@ -132,7 +132,44 @@
                 "stateMutability": "view",
                 "type": "function"
             }
-        ];
+        ];[10:13] DJULU PENGHE Bonté
+const contractABI = [
+
+    {
+        "constant": true,
+        "inputs": [
+            {
+                "name": "vin",
+                "type": "string"
+            }
+
+        ],
+        "name": "getMileageHistory",
+
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "name": "mileage",
+                        "type": "uint256"
+                    },
+                    {
+                        "name": "timestamp",
+                        "type": "uint256"
+                    }
+                ],
+                "name": "",
+                "type": "tuple[]"
+            }
+        ],
+
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    }
+
+];
+
  
         const contract = new window.web3.eth.Contract(contractABI, contractAddress);
  
