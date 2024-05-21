@@ -149,7 +149,7 @@ if (!isset($_SESSION['PROFILE']) || $_SESSION['PROFILE'] == null) {
                 }
             ];
  
-            const contractAddress = 'VOTRE_ADRESSE_CONTRAT';
+            const contractAddress = '0x878F4af3BF8bB4736715aA9d8131c855Dbbd15E1';
             const contract = new web3.eth.Contract(contractABI, contractAddress);
             const accounts = await web3.eth.getAccounts();
  
