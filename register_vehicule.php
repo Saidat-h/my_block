@@ -60,8 +60,7 @@ if (!isset($_SESSION['PROFILE']) || $_SESSION['PROFILE'] == null) {
         <input type="text" id="vin" name="vin" required><br><br>
         <label for="kilometrage">Kilométrage :</label>
         <input type="number" id="kilometrage" name="kilometrage" required><br><br>
-        <label for="info_complementaires">Informations complémentaires :</label>
-        <textarea id="info_complementaires" name="info_complementaires"></textarea><br><br>
+           
         <input type="submit" value="Enregistrer">
     </form>
  

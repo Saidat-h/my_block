@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -43,6 +42,7 @@
         }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/web3@1.6.1/dist/web3.min.js"></script>
+    <script src="abi.js"></script>
 </head>
 <body>
     <h1>Rechercher un véhicule</h1>
@@ -59,119 +59,14 @@
         // Initialiser web3
         if (typeof window.ethereum !== 'undefined' || typeof window.web3 !== 'undefined') {
             window.web3 = new Web3(window.ethereum || window.web3.currentProvider);
-            window.ethereum.request({ method: 'eth_requestAccounts' });
         } else {
             window.web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'));
         }
  
-        // Adresse et ABI du contrat CarRegistry
-        const contractAddress = '0x878F4af3BF8bB4736715aA9d8131c855Dbbd15E1';
-        const contractABI = [
-            {
-                "constant": false,
-                "inputs": [
-                    {
-                        "name": "vin",
-                        "type": "string"
-                    }
-                ],
-                "name": "registerCar",
-                "outputs": [],
-                "payable": false,
-                "stateMutability": "nonpayable",
-                "type": "function"
-            },
-            {
-                "constant": false,
-                "inputs": [
-                    {
-                        "name": "vin",
-                        "type": "string"
-                    },
-                    {
-                        "name": "newMileage",
-                        "type": "uint256"
-                    },
-                    {
-                        "name": "timestamp",
-                        "type": "uint256"
-                    }
-                ],
-                "name": "updateMileage",
-                "outputs": [],
-                "payable": false,
-                "stateMutability": "nonpayable",
-                "type": "function"
-            },
-            {
-                "constant": true,
-                "inputs": [
-                    {
-                        "name": "vin",
-                        "type": "string"
-                    }
-                ],
-                "name": "getMileageHistory",
-                "outputs": [
-                    {
-                        "components": [
-                            {
-                                "name": "mileage",
-                                "type": "uint256"
-                            },
-                            {
-                                "name": "timestamp",
-                                "type": "uint256"
-                            }
-                        ],
-                        "name": "",
-                        "type": "tuple[]"
-                    }
-                ],
-                "payable": false,
-                "stateMutability": "view",
-                "type": "function"
-            }
-        ];[10:13] DJULU PENGHE Bonté
-const contractABI = [
-
-    {
-        "constant": true,
-        "inputs": [
-            {
-                "name": "vin",
-                "type": "string"
-            }
-
-        ],
-        "name": "getMileageHistory",
-
-        "outputs": [
-            {
-                "components": [
-                    {
-                        "name": "mileage",
-                        "type": "uint256"
-                    },
-                    {
-                        "name": "timestamp",
-                        "type": "uint256"
-                    }
-                ],
-                "name": "",
-                "type": "tuple[]"
-            }
-        ],
-
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
-    }
-
-];
-
+        // Adresse du contrat CarRegistry
+        const contractAddress = '0x8dc492154D193A4B24F4715269Ef0FdE4A40b23C';
  
-        const contract = new window.web3.eth.Contract(contractABI, contractAddress);
+        const contract = new window.web3.eth.Contract(abi, contractAddress);
  
         // Gérer le formulaire de recherche
         document.getElementById('searchForm').addEventListener('submit', function(event) {
@@ -183,37 +78,58 @@ const contractABI = [
             }
             searchVehicle(vin);
         });
- 
+
+        // Fonction pour afficher les informations du véhicule
+        function displayVehicleInfo(mileageHistory) {
+    const vehicleInfoDiv = document.getElementById('vehicleInfo');
+    
+    // Vérifier si mileageHistory est défini et est un tableau
+    if (!mileageHistory || Object.keys(mileageHistory).length === 0) {
+        vehicleInfoDiv.innerHTML = '<p>Aucun historique trouvé pour ce VIN.</p>';
+        return;
+    }
+
+    let html = '<h2>Historique des kilométrages :</h2>';
+    html += '<ul>';
+
+    // Accéder directement aux tableaux dans l'objet mileageHistory
+    const mileages = mileageHistory[0];
+    const timestamps = mileageHistory[1];
+
+    if (!mileages || !timestamps || mileages.length === 0 || timestamps.length === 0) {
+        vehicleInfoDiv.innerHTML = '<p>Aucun historique trouvé pour ce VIN.</p>';
+        return;
+    }
+
+    // Boucler à travers les tableaux de mileages et de timestamps
+    for (let i = 0; i < mileages.length; i++) {
+        html += `<li><strong>Kilométrage :</strong> ${mileages[i]}, <strong>Timestamp :</strong> ${new Date(timestamps[i] * 1000).toLocaleString()}</li>`;
+    }
+    html += '</ul>';
+
+    vehicleInfoDiv.innerHTML = html;
+}
+
+
+        // Fonction pour rechercher un véhicule
         async function searchVehicle(vin) {
             try {
+                console.log('Fetching accounts...');
                 const accounts = await window.web3.eth.getAccounts();
+                console.log('Accounts:', accounts);
                 const account = accounts[0];
  
+                console.log('Calling getMileageHistory for VIN:', vin);
                 // Appeler la fonction getMileageHistory du contrat pour récupérer l'historique des kilométrages
                 const mileageHistory = await contract.methods.getMileageHistory(vin).call({ from: account });
  
+                console.log('Mileage history:', mileageHistory);
                 // Afficher les informations du véhicule
                 displayVehicleInfo(mileageHistory);
             } catch (error) {
                 console.error('Erreur lors de la recherche du véhicule:', error);
+                document.getElementById('vehicleInfo').innerHTML = '<p>Erreur lors de la recherche du véhicule. Veuillez réessayer plus tard.</p>';
             }
-        }
- 
-        function displayVehicleInfo(mileageHistory) {
-            const vehicleInfoDiv = document.getElementById('vehicleInfo');
-            if (mileageHistory.length === 0) {
-                vehicleInfoDiv.innerHTML = '<p>Aucun historique trouvé pour ce VIN.</p>';
-                return;
-            }
- 
-            let html = '<h2>Historique des kilométrages :</h2>';
-            html += '<ul>';
-            mileageHistory.forEach(record => {
-                html += `<li><strong>Kilométrage :</strong> ${record.mileage}, <strong>Timestamp :</strong> ${new Date(record.timestamp * 1000).toLocaleString()}</li>`;
-            });
-            html += '</ul>';
- 
-            vehicleInfoDiv.innerHTML = html;
         }
     </script>
 </body>
