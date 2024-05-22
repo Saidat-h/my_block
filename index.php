@@ -118,6 +118,7 @@
         <ul>
             <li><a href="connexion.php">Enregistrer un véhicule</a></li>
             <li><a href="search_vehicule.php">Rechercher un véhicule</a></li>
+            <li><a href="register_vehicule.php">Enregistrer un véhicule (temp)</a></li>
         </ul>
     </nav>
     <main>

@@ -60,11 +60,11 @@
         if (typeof window.ethereum !== 'undefined' || typeof window.web3 !== 'undefined') {
             window.web3 = new Web3(window.ethereum || window.web3.currentProvider);
         } else {
-            window.web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'));
+            window.web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:7545'));
         }
  
         // Adresse du contrat CarRegistry
-        const contractAddress = '0x8dc492154D193A4B24F4715269Ef0FdE4A40b23C';
+        const contractAddress = '0x6F02E69b327bA81921745255f2A762E03Aecf3c6';
  
         const contract = new window.web3.eth.Contract(abi, contractAddress);
  

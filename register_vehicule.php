@@ -1,13 +1,3 @@
-<?php
-session_start(); // Démarrer la session
- 
-// Vérifier si l'utilisateur est connecté
-if (!isset($_SESSION['PROFILE']) || $_SESSION['PROFILE'] == null) {
-    // Rediriger vers la page de connexion
-    header("Location: index.php");
-    exit; // Arrêter l'exécution du script après la redirection
-}
-?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -26,9 +16,7 @@ if (!isset($_SESSION['PROFILE']) || $_SESSION['PROFILE'] == null) {
             margin-bottom: 5px;
         }
         input[type="text"],
-        input[type="number"],
-        input[type="datetime-local"],
-        textarea {
+        input[type="number"] {
             width: 100%;
             padding: 8px;
             margin-bottom: 10px;
@@ -48,95 +36,61 @@ if (!isset($_SESSION['PROFILE']) || $_SESSION['PROFILE'] == null) {
             background-color: #45a049;
         }
     </style>
-    <!-- Inclure la bibliothèque web3.js depuis un CDN -->
     <script src="https://cdn.jsdelivr.net/npm/web3@1.6.1/dist/web3.min.js"></script>
+    <script src="abi.js"></script>
 </head>
 <body>
     <h1>Enregistrer un véhicule</h1>
     <form id="registerForm">
-        <label for="date">Date et Heure :</label>
-        <input type="datetime-local" id="date" name="date" required><br><br>
         <label for="vin">VIN :</label>
         <input type="text" id="vin" name="vin" required><br><br>
         <label for="kilometrage">Kilométrage :</label>
         <input type="number" id="kilometrage" name="kilometrage" required><br><br>
-           
         <input type="submit" value="Enregistrer">
     </form>
- 
+
     <script>
-        document.getElementById('registerForm').onsubmit = async function(event) {
+        document.getElementById('registerForm').addEventListener('submit', async function(event) {
             event.preventDefault();
-            
+
             const vin = document.getElementById('vin').value;
-            const date = document.getElementById('date').value;
             const mileage = document.getElementById('kilometrage').value;
- 
+            const currentDate = Math.floor(Date.now() / 1000); // Timestamp actuel en secondes
+
+            console.log('VIN:', vin);
+            console.log('Mileage:', mileage);
+            console.log('Current Date (timestamp):', currentDate);
+
             if (typeof window.ethereum !== 'undefined' || typeof window.web3 !== 'undefined') {
                 window.web3 = new Web3(window.ethereum || window.web3.currentProvider);
-                await window.ethereum.request({ method: 'eth_requestAccounts' });
+                console.log('Web3 initialized with Ethereum provider');
             } else {
-                alert('Vous devez installer MetaMask !');
-                return;
-            }
- 
-            const contractABI = [
-                
-        {
-        "constant": false,
-        "inputs": [
-            {
-                "name": "vin",
-                "type": "string"
-            }
-        ],
-        "name": "registerCar",
-        "outputs": [],
-        "payable": false,
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "constant": false,
-        "inputs": [
-            {
-                "name": "vin",
-                "type": "string"
-            },
-            {
-                "name": "newMileage",
-                "type": "uint256"
-            },
-
-            {
-                "name": "timestamp",
-                "type": "uint256"
-
+                window.web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:7545'));
+                console.log('Web3 initialized with HTTP provider');
             }
 
-        ],
+            const contractAddress = '0x6F02E69b327bA81921745255f2A762E03Aecf3c6';
+            const contract = new window.web3.eth.Contract(abi, contractAddress);
 
-        "name": "updateMileage",
-        "outputs": [],
-        "payable": false,
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    ];
- 
-            const contractAddress = '0x878F4af3BF8bB4736715aA9d8131c855Dbbd15E1';
-            const contract = new web3.eth.Contract(contractABI, contractAddress);
-            const accounts = await web3.eth.getAccounts();
- 
             try {
-                await contract.methods.registerCar(vin).send({ from: accounts[0] });
-                await contract.methods.updateMileage(vin, mileage, Math.floor(new Date(date).getTime() / 1000)).send({ from: accounts[0] });
+                const accounts = await web3.eth.getAccounts();
+                console.log('Accounts:', accounts);
+
+                // Après avoir obtenu les comptes et le contrat...
+
+                console.log('Registering car with VIN:', vin);
+                await contract.methods.registerCar(vin, mileage, currentDate).send({ from: accounts[0], gas: 672280 });
+                console.log('Car registered successfully');
+
+
+                
+
                 alert('Véhicule enregistré avec succès sur la blockchain.');
             } catch (error) {
                 console.error('Erreur lors de l\'enregistrement du véhicule :', error);
                 alert('Erreur lors de l\'enregistrement du véhicule.');
             }
-        };
+        });
     </script>
 </body>
 </html>

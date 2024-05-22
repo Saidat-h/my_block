@@ -1,5 +1,6 @@
 
     const abi= [
+      
       {
         "anonymous": false,
         "inputs": [
@@ -57,6 +58,16 @@
             "internalType": "string",
             "name": "vin",
             "type": "string"
+          },
+          {
+            "internalType": "uint256",
+            "name": "initialMileage",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "registrationTime",
+            "type": "uint256"
           }
         ],
         "name": "registerCar",
@@ -116,4 +127,5 @@
         "stateMutability": "view",
         "type": "function"
       }
+  
     ]
