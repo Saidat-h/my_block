@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rechercher un véhicule</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
     <nav>
         <ul>
             <li><a href="index.php">Retour à l'accueil</a></li>
@@ -52,16 +53,24 @@
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
 </head>
 <body>
-    <h1>Rechercher un véhicule</h1>
-    <form id="searchForm">
-        <label for="vin">Entrez le VIN :</label>
-        <input type="text" id="vin" name="vin" required><br><br>
-        <input type="submit" value="Rechercher">
-    </form>
-    <div class="vehicle-info" id="vehicleInfo">
-        <!-- Les informations du véhicule seront affichées ici -->
+    <div class="container">
+        <h1>Rechercher un véhicule</h1>
+        <form id="searchForm">
+            <label for="vin">Entrez le VIN :</label>
+            <input type="text" id="vin" name="vin" required><br><br>
+            <input type="submit" value="Rechercher">
+        </form>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="vehicle-info" id="vehicleInfo">
+                    <!-- Les informations du véhicule seront affichées ici -->
+                </div>
+            </div>
+            <div class="col-md-6">
+                <canvas id="kilometrageChart" width="400" height="200"></canvas>
+            </div>
+        </div>
     </div>
-    <canvas id="kilometrageChart" width="400" height="200"></canvas>
 
     <script>
         // Initialiser web3
@@ -176,5 +185,6 @@
             });
         }
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
