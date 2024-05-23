@@ -1,6 +1,5 @@
 
     const abi= [
-      
       {
         "anonymous": false,
         "inputs": [
@@ -27,6 +26,18 @@
             "internalType": "uint256",
             "name": "creationTime",
             "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "string",
+            "name": "firstNameConcessionnaire",
+            "type": "string"
+          },
+          {
+            "indexed": false,
+            "internalType": "string",
+            "name": "lastNameConcessionnaire",
+            "type": "string"
           }
         ],
         "name": "CarRegistered",
@@ -79,6 +90,16 @@
             "internalType": "uint256",
             "name": "creationTime",
             "type": "uint256"
+          },
+          {
+            "internalType": "string",
+            "name": "firstNameConcessionnaire",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "lastNameConcessionnaire",
+            "type": "string"
           }
         ],
         "name": "registerCar",
@@ -137,14 +158,22 @@
             "internalType": "uint256",
             "name": "",
             "type": "uint256"
+          },
+          {
+            "internalType": "string",
+            "name": "",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "",
+            "type": "string"
           }
         ],
         "payable": false,
         "stateMutability": "view",
         "type": "function"
       }
-  
-  
   
   
     ]

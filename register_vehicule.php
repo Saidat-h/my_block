@@ -7,6 +7,9 @@ if (!isset($_SESSION['PROFILE']) || $_SESSION['PROFILE']['type'] !== 'c') {
     header('Location: connexion.php');
     exit();
 }
+
+$firstNameConcessionnaire = $_SESSION['PROFILE']['prenom'];
+$lastNameConcessionnaire = $_SESSION['PROFILE']['nom'];
 ?>
 
 <!DOCTYPE html>
@@ -71,6 +74,9 @@ if (!isset($_SESSION['PROFILE']) || $_SESSION['PROFILE']['type'] !== 'c') {
         <label for="ajouterAleatoirement">SIMULATION : Ajouter aléatoirement le kilométrage:</label>
         <input type="checkbox" id="ajouterAleatoirement" name="ajouterAleatoirement"><br><br>
 
+        <input type="hidden" id="firstNameConcessionnaire" value="<?php echo $firstNameConcessionnaire; ?>">
+        <input type="hidden" id="lastNameConcessionnaire" value="<?php echo $lastNameConcessionnaire; ?>">
+
         <input type="submit" value="Enregistrer">
     </form>
 
@@ -79,7 +85,7 @@ if (!isset($_SESSION['PROFILE']) || $_SESSION['PROFILE']['type'] !== 'c') {
             event.preventDefault();
 
             let contract;
-            const contractAddress = '0x5915db7f6186D64AA929BD3eB3F474AB727B0966'; // Assurez-vous que cette adresse est correcte
+            const contractAddress = '0xdcA9e144a2CB0C23Db791c4E1919cab260826945'; // Assurez-vous que cette adresse est correcte
             if (typeof window.ethereum !== 'undefined' || typeof window.web3 !== 'undefined') {
                 window.web3 = new Web3(window.ethereum || window.web3.currentProvider);
                 console.log('Web3 initialized with Ethereum provider');
@@ -94,20 +100,24 @@ if (!isset($_SESSION['PROFILE']) || $_SESSION['PROFILE']['type'] !== 'c') {
             const mileage = document.getElementById('kilometrage').value;
             const creationDate = Math.floor(new Date(document.getElementById('creationDate').value).getTime() / 1000); // Convertir en timestamp Unix
             const currentDate = Math.floor(Date.now() / 1000); // Timestamp actuel en secondes
+            const firstNameConcessionnaire = document.getElementById('firstNameConcessionnaire').value;
+            const lastNameConcessionnaire = document.getElementById('lastNameConcessionnaire').value;
             const ajouterAleatoirement = document.getElementById('ajouterAleatoirement').checked;
 
             console.log('VIN:', vin);
             console.log('Mileage:', mileage);
             console.log('Creation Date (timestamp):', creationDate);
             console.log('Current Date (timestamp):', currentDate);
+            console.log('First Name Concessionnaire:', firstNameConcessionnaire);
+            console.log('Last Name Concessionnaire:', lastNameConcessionnaire);
 
             try {
                 const accounts = await window.web3.eth.getAccounts();
                 console.log('Accounts:', accounts);
 
-                // Enregistrement de la voiture avec le VIN, le kilométrage, la date actuelle et la date de création
+                // Enregistrement de la voiture avec le VIN, le kilométrage, la date actuelle, la date de création et les informations du concessionnaire
                 console.log('Registering car with VIN:', vin);
-                await contract.methods.registerCar(vin, mileage, currentDate, creationDate).send({ from: accounts[0], gas: 672280 });
+                await contract.methods.registerCar(vin, mileage, currentDate, creationDate, firstNameConcessionnaire, lastNameConcessionnaire).send({ from: accounts[0], gas: 672280 });
                 console.log('Car registered successfully');
                 alert('Véhicule enregistré avec succès sur la blockchain.');
 
