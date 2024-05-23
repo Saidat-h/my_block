@@ -99,11 +99,14 @@
 
             const mileages = mileageHistory[0];
             const timestamps = mileageHistory[1];
+            const creationTime = mileageHistory[2];
 
             if (!mileages || !timestamps || mileages.length === 0 || timestamps.length === 0) {
                 vehicleInfoDiv.innerHTML = '<p>Aucun historique trouvé pour ce VIN.</p>';
                 return;
             }
+
+            html += `<p><strong>Date de création du véhicule :</strong> ${new Date(creationTime * 1000).toLocaleString()}</p>`;
 
             for (let i = 0; i < mileages.length; i++) {
                 html += `<li><strong>Kilométrage :</strong> ${mileages[i]}, <strong>Timestamp :</strong> ${new Date(timestamps[i] * 1000).toLocaleString()}</li>`;
