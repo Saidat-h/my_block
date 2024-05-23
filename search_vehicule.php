@@ -152,10 +152,14 @@ $vehicleData = json_decode($input, true);
             vehicleInfoDiv.innerHTML = `<p><strong>Date de création du véhicule :</strong> ${new Date(creationTime * 1000).toLocaleString()}</p>`;
 
             let tableHTML = '<table>';
-            tableHTML += '<thead><tr><th>Année</th><th>Kilométrage</th></tr></thead><tbody>';
+            tableHTML += '<thead><tr><th>Date d\'enregistrement</th><th>Kilométrage</th></tr></thead><tbody>';
             for (let i = 0; i < mileages.length; i++) {
-                const year = new Date(timestamps[i] * 1000).getFullYear();
-                tableHTML += `<tr><td>${year}</td><td>${mileages[i]}</td></tr>`;
+                const date = new Date(timestamps[i] * 1000).toLocaleDateString('fr-FR', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric'
+                });
+                tableHTML += `<tr><td>${date}</td><td>${mileages[i]}</td></tr>`;
             }
             tableHTML += '</tbody></table>';
 

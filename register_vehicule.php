@@ -110,7 +110,7 @@
                 }
             } catch (error) {
                 console.error('Erreur lors de l\'enregistrement du véhicule :', error);
-                alert('Erreur lors de l\'enregistrement du véhicule.');
+                alert('Erreur lors de l\'enregistrement du véhicule. Le véhicule est déjà enregistré ou la connexion à la blockchain n\'a pas aboutie');
             }
         });
 
