@@ -11,7 +11,7 @@
             color: white;
         }
         body {
-            background-color: #343a40; /* Optionnel: couleur de fond pour une meilleure visibilité */
+            background-color: #343a40;
         }
     </style>
 </head>

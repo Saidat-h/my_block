@@ -1,5 +1,5 @@
 <?php
-session_start(); // Démarrer la session pour les messages
+session_start();
 
 $email = htmlentities($_POST['email']);
 $mdp = htmlentities($_POST['mdp']);
@@ -16,7 +16,7 @@ if ($mysqli->connect_error) {
 }
 
 // Préparation de la requête SQL
-if ($stmt = $mysqli->prepare("SELECT * FROM vendeur WHERE email=? LIMIT 1")) {
+if ($stmt = $mysqli->prepare("SELECT * FROM utilisateur WHERE email=? LIMIT 1")) {
     $stmt->bind_param("s", $email);
     $stmt->execute();
 
@@ -36,30 +36,56 @@ if ($stmt = $mysqli->prepare("SELECT * FROM vendeur WHERE email=? LIMIT 1")) {
             // Stocker les informations de l'utilisateur dans la session
             $_SESSION['PROFILE'] = $row;
             $_SESSION['message'] = "Connexion réussie.";
-            echo '<script>window.onload = function() {
-                    setTimeout(function() {
-                        window.location.href = "register_vehicule.php";
-                    }, 100); // Rediriger après 4 secondes
-                }</script>';
+
+            // Rediriger en fonction du type d'utilisateur
+            if ($row['type'] === 'c') {
+                echo '<script>
+                        window.onload = function() {
+                            setTimeout(function() {
+                                window.location.href = "index_concessionnaire.php";
+                            }, 100); // Rediriger après 0,1 seconde
+                        }
+                      </script>';
+            } else if ($row['type'] === 'g') {
+                echo '<script>
+                        window.onload = function() {
+                            setTimeout(function() {
+                                window.location.href = "index_garagiste.php";
+                            }, 100); // Rediriger après 0,1 seconde
+                        }
+                      </script>';
+            } else {
+                echo '<script>
+                        window.onload = function() {
+                            setTimeout(function() {
+                                window.location.href = "index.php";
+                            }, 100); // Rediriger après 0,1 seconde
+                        }
+                      </script>';
+            }
         } else {
             // Redirection si le mot de passe est incorrect
             $_SESSION['message'] = "Mot de passe incorrect.";
-            echo '<script>window.onload = function() {
-                    alert("' . $_SESSION['message'] . '");
-                    setTimeout(function() {
-                        window.location.href = "connexion.php";
-                    }, 100); // Rediriger après 4 secondes
-                }</script>';
+            echo '<script>
+                    window.onload = function() {
+                        alert("' . $_SESSION['message'] . '");
+                        setTimeout(function() {
+                            window.location.href = "connexion.php";
+                        }, 100); // Rediriger après 0,1 seconde
+                    }
+                  </script>';
         }
     } else {
         // Redirection si l'utilisateur n'existe pas
         $_SESSION['message'] = "Identifiant inexistant.";
-        echo '<script>window.onload = function() {
-                alert("' . $_SESSION['message'] . '");
-                setTimeout(function() {
-                    window.location.href = "connexion.php";
-                }, 100); // Rediriger après 4 secondes
-            }</script>';
+        echo '<script>
+                window.onload = function() {
+                    alert("' . $_SESSION['message'] . '");
+                    setTimeout(function() {
+                        window.location.href = "connexion.php";
+                    }, 100); // Rediriger après 0,1 seconde
+                }
+              </script>';
     }
 
     // Fermer le statement

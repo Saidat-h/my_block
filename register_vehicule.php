@@ -1,3 +1,14 @@
+<?php
+session_start();
+
+// Vérifier si l'utilisateur est connecté et est un concessionnaire
+if (!isset($_SESSION['PROFILE']) || $_SESSION['PROFILE']['type'] !== 'c') {
+    $_SESSION['message'] = "Vous devez être connecté en tant que concessionnaire pour accéder à cette page.";
+    header('Location: connexion.php');
+    exit();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>

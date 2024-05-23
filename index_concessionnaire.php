@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Accueil</title>
+    <title>Accueil Concessionnaire</title>
     <style>
         /* Appliquer un minimum de hauteur à la page pour forcer le footer à être en bas */
         body {
@@ -116,8 +116,9 @@
     </header>
     <nav>
         <ul>
-            <li><a href="connexion.php">Se connecter</a></li>
+            <li><a href="register_vehicule.php">Mettre à jour Historique des réparation d'un véhicule </a></li>
             <li><a href="search_vehicule.php">Rechercher un véhicule</a></li>
+            
         </ul>
     </nav>
     <main>
