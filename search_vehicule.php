@@ -1,3 +1,9 @@
+<?php
+// Récupérer les données POST
+$input = file_get_contents('php://input');
+$vehicleData = json_decode($input, true);
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -46,6 +52,21 @@
         .vehicle-info p {
             margin: 5px 0;
         }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/web3@1.6.1/dist/web3.min.js"></script>
     <script src="abi.js"></script>
@@ -64,6 +85,9 @@
             <div class="col-md-6">
                 <div class="vehicle-info" id="vehicleInfo">
                     <!-- Les informations du véhicule seront affichées ici -->
+                </div>
+                <div id="vehicleDataTable">
+                    <!-- Le tableau des données de kilométrage sera affiché ici -->
                 </div>
             </div>
             <div class="col-md-6">
@@ -100,21 +124,21 @@
         // Fonction pour effacer les résultats précédents
         function clearPreviousResults() {
             document.getElementById('vehicleInfo').innerHTML = '';
+            document.getElementById('vehicleDataTable').innerHTML = '';
             if (chart) {
                 chart.destroy();
             }
         }
 
-        // Fonction pour afficher les informations du véhicule
+        // Fonction pour afficher les informations du véhicule et les données dans un tableau
         function displayVehicleInfo(mileageHistory) {
             const vehicleInfoDiv = document.getElementById('vehicleInfo');
+            const vehicleDataTableDiv = document.getElementById('vehicleDataTable');
+
             if (!mileageHistory || Object.keys(mileageHistory).length === 0) {
                 vehicleInfoDiv.innerHTML = '<p>Aucun historique trouvé pour ce VIN.</p>';
                 return;
             }
-
-            let html = '<h2>Historique des kilométrages :</h2>';
-            html += '<ul>';
 
             const mileages = mileageHistory[0];
             const timestamps = mileageHistory[1];
@@ -125,14 +149,17 @@
                 return;
             }
 
-            html += `<p><strong>Date de création du véhicule :</strong> ${new Date(creationTime * 1000).toLocaleString()}</p>`;
+            vehicleInfoDiv.innerHTML = `<p><strong>Date de création du véhicule :</strong> ${new Date(creationTime * 1000).toLocaleString()}</p>`;
 
+            let tableHTML = '<table>';
+            tableHTML += '<thead><tr><th>Année</th><th>Kilométrage</th></tr></thead><tbody>';
             for (let i = 0; i < mileages.length; i++) {
-                html += `<li><strong>Kilométrage :</strong> ${mileages[i]}, <strong>Timestamp :</strong> ${new Date(timestamps[i] * 1000).toLocaleString()}</li>`;
+                const year = new Date(timestamps[i] * 1000).getFullYear();
+                tableHTML += `<tr><td>${year}</td><td>${mileages[i]}</td></tr>`;
             }
-            html += '</ul>';
+            tableHTML += '</tbody></table>';
 
-            vehicleInfoDiv.innerHTML = html;
+            vehicleDataTableDiv.innerHTML = tableHTML;
 
             // Générer le graphique après avoir affiché les informations
             generateChart(timestamps, mileages);
