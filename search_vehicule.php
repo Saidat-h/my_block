@@ -83,6 +83,7 @@
         // Adresse du contrat CarRegistry
         const contractAddress = '0x5915db7f6186D64AA929BD3eB3F474AB727B0966';
         const contract = new window.web3.eth.Contract(abi, contractAddress);
+        let chart = null;
 
         // Gérer le formulaire de recherche
         document.getElementById('searchForm').addEventListener('submit', function(event) {
@@ -92,8 +93,17 @@
                 alert('Veuillez entrer un VIN valide.');
                 return;
             }
+            clearPreviousResults();
             searchVehicle(vin);
         });
+
+        // Fonction pour effacer les résultats précédents
+        function clearPreviousResults() {
+            document.getElementById('vehicleInfo').innerHTML = '';
+            if (chart) {
+                chart.destroy();
+            }
+        }
 
         // Fonction pour afficher les informations du véhicule
         function displayVehicleInfo(mileageHistory) {
@@ -150,7 +160,7 @@
             const ctx = document.getElementById('kilometrageChart').getContext('2d');
             const formattedTimestamps = timestamps.map(ts => new Date(ts * 1000));
 
-            const chart = new Chart(ctx, {
+            chart = new Chart(ctx, {
                 type: 'line',
                 data: {
                     labels: formattedTimestamps,
