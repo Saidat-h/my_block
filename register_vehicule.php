@@ -7,7 +7,7 @@
     <nav>
         <ul>
             <li><a href="index.php">Retour à l'accueil</a></li>
-            </ul>
+        </ul>
     </nav>
     <style>
         body {
@@ -21,7 +21,8 @@
             margin-bottom: 5px;
         }
         input[type="text"],
-        input[type="number"] {
+        input[type="number"],
+        input[type="date"] {
             width: 100%;
             padding: 8px;
             margin-bottom: 10px;
@@ -47,19 +48,18 @@
 <body>
     <h1>Enregistrer un véhicule</h1>
     <form id="registerForm">
-        <label for="vin">Numéro d'identifiaction du véhicule:</label>
+        <label for="vin">Numéro d'identification du véhicule:</label>
         <input type="text" id="vin" name="vin" required><br><br>
 
-        <label for="creationDate"> Date de sortie d'usine du véhicule : </label>
-        <input type="date" id="creationDate" name ="datecreationDate" required><br><br>
+        <label for="creationDate">Date de sortie d'usine du véhicule:</label>
+        <input type="date" id="creationDate" name="creationDate" required><br><br>
 
-        <label for="kilometrage">Kilométrage du véhicule lors de l'enregistrement :</label>
+        <label for="kilometrage">Kilométrage du véhicule lors de l'enregistrement:</label>
         <input type="number" id="kilometrage" name="kilometrage" required><br><br>
 
-        <!-- Ajout de la case à cocher -->
-        <label for="ajouterAleatoirement">SIMULATION : Ajouter aléatoirement le kilométrage :</label>
+        <label for="ajouterAleatoirement">SIMULATION : Ajouter aléatoirement le kilométrage:</label>
         <input type="checkbox" id="ajouterAleatoirement" name="ajouterAleatoirement"><br><br>
-        
+
         <input type="submit" value="Enregistrer">
     </form>
 
@@ -68,7 +68,7 @@
             event.preventDefault();
 
             let contract;
-            const contractAddress = '0x86095935E808769A11185F753cf3B4C9Fb0d8F9F';
+            const contractAddress = '0x5915db7f6186D64AA929BD3eB3F474AB727B0966'; // Assurez-vous que cette adresse est correcte
             if (typeof window.ethereum !== 'undefined' || typeof window.web3 !== 'undefined') {
                 window.web3 = new Web3(window.ethereum || window.web3.currentProvider);
                 console.log('Web3 initialized with Ethereum provider');
@@ -81,20 +81,22 @@
 
             const vin = document.getElementById('vin').value;
             const mileage = document.getElementById('kilometrage').value;
+            const creationDate = Math.floor(new Date(document.getElementById('creationDate').value).getTime() / 1000); // Convertir en timestamp Unix
             const currentDate = Math.floor(Date.now() / 1000); // Timestamp actuel en secondes
             const ajouterAleatoirement = document.getElementById('ajouterAleatoirement').checked;
 
             console.log('VIN:', vin);
             console.log('Mileage:', mileage);
+            console.log('Creation Date (timestamp):', creationDate);
             console.log('Current Date (timestamp):', currentDate);
-            
+
             try {
                 const accounts = await window.web3.eth.getAccounts();
                 console.log('Accounts:', accounts);
 
-                // Enregistrement de la voiture avec le VIN et le kilométrage fournis
+                // Enregistrement de la voiture avec le VIN, le kilométrage, la date actuelle et la date de création
                 console.log('Registering car with VIN:', vin);
-                await contract.methods.registerCar(vin, mileage, currentDate).send({ from: accounts[0], gas: 672280 });
+                await contract.methods.registerCar(vin, mileage, currentDate, creationDate).send({ from: accounts[0], gas: 672280 });
                 console.log('Car registered successfully');
                 alert('Véhicule enregistré avec succès sur la blockchain.');
 
@@ -112,32 +114,25 @@
             }
         });
 
-        
-
         async function genererEnregistrementsKilometrage(vin, initialMileage, registrationTime, contract, accounts) {
-    const semainesDansAnnee = 52; // On considère qu'on fait un relevé par semaine
-    let mileage = initialMileage; // Utilisez le kilométrage initial fourni dans le formulaire
-    let timestamp = registrationTime;
-    console.log(mileage);
-    for (let i = 0; i < semainesDansAnnee; i++) {
-        // Générer un kilométrage aléatoire entre 0 et 1000
-        let randomIncrement = Math.floor(Math.random() * 1001);
-        // Convertir la chaîne de caractères mileage en entier, puis ajouter l'incrémentation aléatoire
-        let newMileage = parseInt(mileage) + parseInt(randomIncrement);
-        // Calculer le nouveau timestamp en ajoutant une semaine au timestamp précédent
-        timestamp += (7 * 24 * 60 * 60);
-        // Appeler la fonction updateMileage avec le nouveau kilométrage
-        await contract.methods.updateMileage(vin, newMileage, parseInt(timestamp)).send({ from: accounts[0], gas: 672280 });
+            const semainesDansAnnee = 52; // On considère qu'on fait un relevé par semaine
+            let mileage = initialMileage; // Utilisez le kilométrage initial fourni dans le formulaire
+            let timestamp = registrationTime;
+            console.log(mileage);
+            for (let i = 0; i < semainesDansAnnee; i++) {
+                // Générer un kilométrage aléatoire entre 0 et 1000
+                let randomIncrement = Math.floor(Math.random() * 1001);
+                // Convertir la chaîne de caractères mileage en entier, puis ajouter l'incrémentation aléatoire
+                let newMileage = parseInt(mileage) + parseInt(randomIncrement);
+                // Calculer le nouveau timestamp en ajoutant une semaine au timestamp précédent
+                timestamp += (7 * 24 * 60 * 60);
+                // Appeler la fonction updateMileage avec le nouveau kilométrage
+                await contract.methods.updateMileage(vin, newMileage, timestamp).send({ from: accounts[0], gas: 672280 });
 
-        // Réassigner newMileage à mileage pour la prochaine itération
-        mileage = newMileage;
-}
-
-}
-
-
-
-
+                // Réassigner newMileage à mileage pour la prochaine itération
+                mileage = newMileage;
+            }
+        }
     </script>
 </body>
 </html>
