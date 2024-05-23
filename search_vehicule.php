@@ -128,7 +128,8 @@
             }
 
             let html = '<h2>Historique des kilométrages :</h2>';
-            html += '<ul>';
+            html += '<table>';
+            html += '<thead><tr><th>Date</th><th>Kilométrage</th></tr></thead><tbody>';
 
             const mileages = mileageHistory[0];
             const timestamps = mileageHistory[1];
@@ -141,13 +142,14 @@
                 return;
             }
 
-            html += `<p><strong>Date de création du véhicule :</strong> ${new Date(creationTime * 1000).toLocaleString()}</p>`;
-            html += `<p><strong>Véhicule enregistré par le Concessionnaire :</strong> ${firstNameConcessionnaire} ${lastNameConcessionnaire}</p>`;
+            html += `<p><strong>Date de création du véhicule :</strong> ${new Date(creationTime * 1000).toLocaleDateString('fr-FR')}</p>`;
+            html += `<p><strong>Concessionnaire ayant enregistré le véhicule :</strong> ${firstNameConcessionnaire} ${lastNameConcessionnaire}</p>`;
 
             for (let i = 0; i < mileages.length; i++) {
-                html += `<li><strong>Kilométrage :</strong> ${mileages[i]}, <strong>Timestamp :</strong> ${new Date(timestamps[i] * 1000).toLocaleString()}</li>`;
+                const date = new Date(timestamps[i] * 1000).toLocaleDateString('fr-FR');
+                html += `<tr><td>${date}</td><td>${mileages[i]}</td></tr>`;
             }
-            html += '</ul>';
+            html += '</tbody></table>';
 
             vehicleInfoDiv.innerHTML = html;
 
