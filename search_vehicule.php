@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rechercher un véhicule</title>
+    <nav>
+        <ul>
+            <li><a href="index.php">Retour à l'accueil</a></li>
+            </ul>
+    </nav>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -64,7 +69,7 @@
         }
  
         // Adresse du contrat CarRegistry
-        const contractAddress = '0x6F02E69b327bA81921745255f2A762E03Aecf3c6';
+        const contractAddress = '0x86095935E808769A11185F753cf3B4C9Fb0d8F9F';
  
         const contract = new window.web3.eth.Contract(abi, contractAddress);
  

@@ -21,6 +21,12 @@
             "internalType": "uint256",
             "name": "registrationTime",
             "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "creationTime",
+            "type": "uint256"
           }
         ],
         "name": "CarRegistered",
@@ -67,6 +73,11 @@
           {
             "internalType": "uint256",
             "name": "registrationTime",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "creationTime",
             "type": "uint256"
           }
         ],
@@ -121,11 +132,17 @@
             "internalType": "uint256[]",
             "name": "",
             "type": "uint256[]"
+          },
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
           }
         ],
         "payable": false,
         "stateMutability": "view",
         "type": "function"
       }
+  
   
     ]

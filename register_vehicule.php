@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Enregistrer un véhicule</title>
+    <nav>
+        <ul>
+            <li><a href="index.php">Retour à l'accueil</a></li>
+            </ul>
+    </nav>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -42,13 +47,19 @@
 <body>
     <h1>Enregistrer un véhicule</h1>
     <form id="registerForm">
-        <label for="vin">VIN :</label>
+        <label for="vin">Numéro d'identifiaction du véhicule:</label>
         <input type="text" id="vin" name="vin" required><br><br>
-        <label for="kilometrage">Kilométrage :</label>
+
+        <label for="creationDate"> Date de sortie d'usine du véhicule : </label>
+        <input type="date" id="creationDate" name ="datecreationDate" required><br><br>
+
+        <label for="kilometrage">Kilométrage du véhicule lors de l'enregistrement :</label>
         <input type="number" id="kilometrage" name="kilometrage" required><br><br>
+
         <!-- Ajout de la case à cocher -->
-        <label for="ajouterAleatoirement">Ajouter aléatoirement le kilométrage :</label>
+        <label for="ajouterAleatoirement">SIMULATION : Ajouter aléatoirement le kilométrage :</label>
         <input type="checkbox" id="ajouterAleatoirement" name="ajouterAleatoirement"><br><br>
+        
         <input type="submit" value="Enregistrer">
     </form>
 
@@ -57,7 +68,7 @@
             event.preventDefault();
 
             let contract;
-            const contractAddress = '0x6F02E69b327bA81921745255f2A762E03Aecf3c6';
+            const contractAddress = '0x86095935E808769A11185F753cf3B4C9Fb0d8F9F';
             if (typeof window.ethereum !== 'undefined' || typeof window.web3 !== 'undefined') {
                 window.web3 = new Web3(window.ethereum || window.web3.currentProvider);
                 console.log('Web3 initialized with Ethereum provider');
