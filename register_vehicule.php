@@ -20,7 +20,7 @@ $lastNameConcessionnaire = $_SESSION['PROFILE']['nom'];
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css" rel="stylesheet">
     <title>Enregistrer un véhicule</title>
     <nav>
-    <button class="btn btn-outline-secondary" type="button" onclick="window.location.href='index_concessionnaire.php'"> <i class="bi bi-house"></i></button>
+    <button class="btn btn-outline-secondary btn-lg" type="button" onclick="window.location.href='index.php'"><i class="bi bi-house"></i></button>
     </nav>
     <style>
         body {
