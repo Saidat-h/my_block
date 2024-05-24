@@ -7,9 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css" rel="stylesheet">
     <nav>
-        <ul>
-            <li><a href="index.php">Retour à l'accueil</a></li>
-        </ul>
+    <button class="btn btn-outline-secondary" type="button" onclick="window.location.href='index.php'"> <i class="bi bi-house"></i></button>
     </nav>
     <style>
         body {
@@ -62,13 +60,14 @@
             background-color: #f2f2f2;
         }
     </style>
+    
     <script src="https://cdn.jsdelivr.net/npm/web3@1.6.1/dist/web3.min.js"></script>
     <script src="abi.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
 </head>
 <body>
-    <button class="btn btn-outline-secondary" type="button" onclick="window.location.href='index.php'"> <i class="bi bi-house"></i></button>
+    
     <div class="container">
         <h1>Rechercher un véhicule</h1>
         <form id="searchForm">

@@ -6,7 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css" rel="stylesheet">
+    <nav>
+    <button class="btn btn-outline-secondary" type="button" onclick="window.location.href='index.php'"> <i class="bi bi-house"></i></button>
+    </nav>
     <title>Connexion</title>
+
     <style>
         .form-label {
             color: white;
@@ -42,10 +46,6 @@
                     <div class="row my-3">
                         <div class="d-grid gap-2 d-md-block">
                             <button class="btn btn-outline-primary" type="submit">Se connecter</button>
-                            <!-- Bouton retour à index.php avec icône de maison -->
-                            <button class="btn btn-outline-secondary" type="button" onclick="window.location.href='index.php'">
-                                <i class="bi bi-house"></i>
-                            </button>
                         </div>
                     </div>
                 </div>
