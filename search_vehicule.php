@@ -143,7 +143,7 @@
                 return;
             }
 
-            html += `<p><strong>Date de création du véhicule :</strong> ${new Date(creationTime * 1000).toLocaleDateString('fr-FR')}</p>`;
+            html += `<p><strong>Date de la première vente du véhicule :</strong> ${new Date(creationTime * 1000).toLocaleDateString('fr-FR')}</p>`;
             html += `<p><strong>Concessionnaire ayant enregistré le véhicule :</strong> ${firstNameConcessionnaire} ${lastNameConcessionnaire}</p>`;
 
             for (let i = 0; i < mileages.length; i++) {

@@ -65,7 +65,7 @@ $lastNameConcessionnaire = $_SESSION['PROFILE']['nom'];
         <label for="vin">Numéro d'identification du véhicule:</label>
         <input type="text" id="vin" name="vin" required><br><br>
 
-        <label for="creationDate">Date de sortie d'usine du véhicule:</label>
+        <label for="creationDate">Date de la première vente du véhicule:</label>
         <input type="date" id="creationDate" name="creationDate" required><br><br>
 
         <label for="kilometrage">Kilométrage du véhicule lors de l'enregistrement:</label>
