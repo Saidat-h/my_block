@@ -116,7 +116,7 @@
     </header>
     <nav>
         <ul>
-            <li><a href="register_vehicule.php">Mettre à jour Historique d'un véhicule </a></li>
+            <li><a href="register_garagiste.php">Mettre à jour Historique d'un véhicule </a></li>
             <li><a href="search_vehicule.php">Rechercher un véhicule</a></li>
             
         </ul>

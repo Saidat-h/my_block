@@ -1,3 +1,17 @@
+<?php
+session_start();
+
+// Vérifier si l'utilisateur est connecté et est un concessionnaire
+if (!isset($_SESSION['PROFILE']) || $_SESSION['PROFILE']['type'] !== 'g') {
+    $_SESSION['message'] = "Vous devez être connecté en tant que garagiste pour accéder à cette page.";
+    header('Location: connexion.php');
+    exit();
+}
+
+$firstNameGaragiste = $_SESSION['PROFILE']['prenom'];
+$lastNameGaragiste = $_SESSION['PROFILE']['nom'];
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -7,7 +21,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css" rel="stylesheet">
     <nav>
-    <button class="btn btn-outline-secondary btn-lg" type="button" onclick="window.location.href='index.php'"><i class="bi bi-house"></i></button>
+    <button class="btn btn-outline-secondary btn-lg" type="button" onclick="window.location.href='index_g.php'"><i class="bi bi-house"></i></button>
     </nav>
     <style>
         body {

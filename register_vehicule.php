@@ -20,7 +20,7 @@ $lastNameConcessionnaire = $_SESSION['PROFILE']['nom'];
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css" rel="stylesheet">
     <title>Enregistrer un véhicule</title>
     <nav>
-    <button class="btn btn-outline-secondary btn-lg" type="button" onclick="window.location.href='index.php'"><i class="bi bi-house"></i></button>
+    <button class="btn btn-outline-secondary btn-lg" type="button" onclick="window.location.href='index_concessionnaire.php'"><i class="bi bi-house"></i></button>
     </nav>
     <style>
         body {
@@ -85,7 +85,7 @@ $lastNameConcessionnaire = $_SESSION['PROFILE']['nom'];
             event.preventDefault();
 
             let contract;
-            const contractAddress = '0xdcA9e144a2CB0C23Db791c4E1919cab260826945'; // Assurez-vous que cette adresse est correcte
+            const contractAddress = '0x8717270747e096c762C47d24aEEEB0dd4D1B64e5'; // Assurez-vous que cette adresse est correcte
             if (typeof window.ethereum !== 'undefined' || typeof window.web3 !== 'undefined') {
                 window.web3 = new Web3(window.ethereum || window.web3.currentProvider);
                 console.log('Web3 initialized with Ethereum provider');
