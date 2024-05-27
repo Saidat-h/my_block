@@ -117,7 +117,7 @@
     <nav>
         <ul>
             <li><a href="connexion.php">Se connecter</a></li>
-            <li><a href="search_vehicule.php">Rechercher un véhicule</a></li>
+            <li><a href="search3_vehicle.php">Rechercher un véhicule</a></li>
         </ul>
     </nav>
     <main>
