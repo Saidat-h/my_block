@@ -82,7 +82,7 @@
             <div class="button-container">
                 <input type="text" id="vin" name="vin" required>
                 <input type="submit" value="Rechercher">
-                <button id="showRepairsButton" class="btn btn-info hidden">Réparations</button>
+                <button id="showRepairsButton" class="btn btn-info hidden" type="button">Réparations</button>
             </div>
         </form>
         <div class="row">
@@ -115,6 +115,7 @@
         const contractAddress = '0x8717270747e096c762C47d24aEEEB0dd4D1B64e5';
         const contract = new window.web3.eth.Contract(abi, contractAddress);
         let chart = null;
+        let currentVin = '';
 
         // Gérer le formulaire de recherche
         document.getElementById('searchForm').addEventListener('submit', function(event) {
@@ -125,6 +126,7 @@
                 return;
             }
             clearPreviousResults();
+            currentVin = vin; // Store the current VIN for later use
             searchVehicle(vin);
         });
 
@@ -218,11 +220,8 @@
                 // Afficher les informations du véhicule
                 displayVehicleInfo(mileageHistory);
 
-                // Appeler la fonction getInterventionHistory du contrat pour récupérer l'historique des réparations
-                const repairHistory = await contract.methods.getInterventionHistory(vin).call({ from: account });
-
-                // Afficher les informations des réparations
-                displayRepairsInfo(repairHistory);
+                // Récupérer les informations de réparation et stocker
+                window.repairHistory = await contract.methods.getInterventionHistory(vin).call({ from: account });
 
             } catch (error) {
                 console.error('Erreur lors de la recherche du véhicule:', error);
@@ -277,6 +276,7 @@
         document.getElementById('showRepairsButton').addEventListener('click', function() {
             const repairsInfoDiv = document.getElementById('repairsInfo');
             if (repairsInfoDiv.classList.contains('hidden')) {
+                displayRepairsInfo(window.repairHistory); // Ensure the repairs are displayed
                 repairsInfoDiv.classList.remove('hidden');
             } else {
                 repairsInfoDiv.classList.add('hidden');
