@@ -21,6 +21,9 @@ $lastNameConcessionnaire = $_SESSION['PROFILE']['nom'];
     <title>Enregistrer un véhicule</title>
     <nav>
     <button class="btn btn-outline-secondary btn-lg" type="button" onclick="window.location.href='index_concessionnaire.php'"><i class="bi bi-house"></i></button>
+    <form action="tt_deconnexion.php" method="post" style="display:inline;">
+        <button class="btn btn-outline-secondary btn-lg" type="submit"><i class="bi bi-box-arrow-right"></i> Déconnexion</button>
+    </form>
     </nav>
     <style>
         body {

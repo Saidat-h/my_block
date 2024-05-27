@@ -21,7 +21,14 @@ $lastNameGaragiste = $_SESSION['PROFILE']['nom'];
     <title>Ajouter une réparation faite</title>
     <nav>
     <button class="btn btn-outline-secondary btn-lg" type="button" onclick="window.location.href='index_garagiste.php'"><i class="bi bi-house"></i></button>
-    </nav>
+    <form action="tt_deconnexion.php" method="post" style="display:inline;">
+            <button class="btn btn-outline-secondary btn-lg" type="submit"><i class="bi bi-box-arrow-right"></i> Déconnexion</button>
+        </form>
+    <nav>
+    
+</nav>
+
+</nav>
     <style>
         body {
             font-family: Arial, sans-serif;
