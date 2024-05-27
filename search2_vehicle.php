@@ -21,7 +21,7 @@
             margin-bottom: 5px;
         }
         input[type="text"] {
-            width: 100%;
+            width: calc(100% - 100px);
             padding: 8px;
             margin-bottom: 10px;
             border: 1px solid #ccc;
@@ -62,6 +62,10 @@
         .hidden {
             display: none;
         }
+        .button-container {
+            display: flex;
+            gap: 10px;
+        }
     </style>
     
     <script src="https://cdn.jsdelivr.net/npm/web3@1.6.1/dist/web3.min.js"></script>
@@ -75,8 +79,11 @@
         <h1>Rechercher un véhicule</h1>
         <form id="searchForm">
             <label for="vin">Entrez le VIN :</label>
-            <input type="text" id="vin" name="vin" required><br><br>
-            <input type="submit" value="Rechercher">
+            <div class="button-container">
+                <input type="text" id="vin" name="vin" required>
+                <input type="submit" value="Rechercher">
+                <button id="showRepairsButton" class="btn btn-info hidden">Réparations</button>
+            </div>
         </form>
         <div class="row">
             <div class="col-md-6">
@@ -88,7 +95,6 @@
                 <canvas id="kilometrageChart" width="400" height="200"></canvas>
             </div>
         </div>
-        <button id="showRepairsButton" class="btn btn-info mt-3">Réparations</button>
         <div id="repairsInfo" class="hidden">
             <h2>Historique des réparations :</h2>
             <div id="repairsContent">
@@ -130,6 +136,7 @@
             }
             document.getElementById('repairsContent').innerHTML = '';
             document.getElementById('repairsInfo').classList.add('hidden');
+            document.getElementById('showRepairsButton').classList.add('hidden');
         }
 
         // Fonction pour afficher les informations du véhicule
@@ -168,6 +175,9 @@
 
             // Générer le graphique après avoir affiché les informations
             generateChart(timestamps, mileages);
+
+            // Afficher le bouton "Réparations"
+            document.getElementById('showRepairsButton').classList.remove('hidden');
         }
 
         // Fonction pour afficher l'historique des réparations
@@ -214,13 +224,9 @@
                 // Afficher les informations des réparations
                 displayRepairsInfo(repairHistory);
 
-                // Afficher le bouton "Réparations"
-                document.getElementById('showRepairsButton').classList.remove('hidden');
-
             } catch (error) {
                 console.error('Erreur lors de la recherche du véhicule:', error);
                 document.getElementById('vehicleInfo').innerHTML = '<p>Erreur lors de la recherche du véhicule. Veuillez réessayer plus tard.</p>';
-
             }
         }
 
@@ -280,4 +286,3 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
-
