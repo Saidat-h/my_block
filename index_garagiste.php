@@ -118,8 +118,11 @@
         <ul>
             <li><a href="register_garagiste.php">Mettre à jour Historique d'un véhicule </a></li>
             <li><a href="search_vehicule_g.php">Rechercher un véhicule</a></li>
-            
+            <form action="tt_deconnexion.php" method="post" style="display:inline;">
+            <button class="btn btn-outline-secondary btn-lg" type="submit"><i class="bi bi-box-arrow-right"></i> Déconnexion</button>
+        </form>
         </ul>
+        
     </nav>
     <main>
         <!-- Section de l'image de la location -->

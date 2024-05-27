@@ -73,6 +73,9 @@ $lastNameGaragiste = $_SESSION['PROFILE']['nom'];
     </style>
     <nav>
         <button class="btn btn-outline-secondary btn-lg" type="button" onclick="window.location.href='index_garagiste.php'"><i class="bi bi-house"></i></button>
+    <form action="tt_deconnexion.php" method="post" style="display:inline;">
+        <button class="btn btn-outline-secondary btn-lg" type="submit"><i class="bi bi-box-arrow-right"></i> Déconnexion</button>
+    </form>
     </nav>
     <script src="https://cdn.jsdelivr.net/npm/web3@1.6.1/dist/web3.min.js"></script>
     <script src="abi.js"></script>
