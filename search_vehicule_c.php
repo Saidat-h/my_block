@@ -110,7 +110,7 @@ $lastNameConcessionnaire = $_SESSION['PROFILE']['nom'];
         }
 
         // Adresse du contrat CarRegistry
-        const contractAddress = '0x8717270747e096c762C47d24aEEEB0dd4D1B64e5';
+        const contractAddress = '0x81EFCe92D6FB25CcDaB6e3BaE3A090EE1676e138';
         const contract = new window.web3.eth.Contract(abi, contractAddress);
         let chart = null;
 

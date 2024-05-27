@@ -85,7 +85,7 @@ $lastNameConcessionnaire = $_SESSION['PROFILE']['nom'];
             event.preventDefault();
 
             let contract;
-            const contractAddress = '0x8717270747e096c762C47d24aEEEB0dd4D1B64e5'; // Assurez-vous que cette adresse est correcte
+            const contractAddress = '0x81EFCe92D6FB25CcDaB6e3BaE3A090EE1676e138'; // Assurez-vous que cette adresse est correcte
             if (typeof window.ethereum !== 'undefined' || typeof window.web3 !== 'undefined') {
                 window.web3 = new Web3(window.ethereum || window.web3.currentProvider);
                 console.log('Web3 initialized with Ethereum provider');
