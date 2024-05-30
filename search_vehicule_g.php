@@ -141,7 +141,7 @@ $lastNameGaragiste = $_SESSION['PROFILE']['nom'];
             }
         }
 
-        // Fonction pour effacer les résultats précédents
+        // Fonction pour effacer les résultats précédents, sinonle graphique précédent empêchait l'affichage du nouveau tableau
         function clearPreviousResults() {
             document.getElementById('vehicleInfo').innerHTML = '';
             if (chart) {
@@ -152,21 +152,26 @@ $lastNameGaragiste = $_SESSION['PROFILE']['nom'];
         // Fonction pour afficher les informations du véhicule
         function displayVehicleInfo(InterventionRecord) {
             const vehicleInfoDiv = document.getElementById('vehicleInfo');
+
+            //Vérification si kilométrage existant pour vin
             if (!InterventionRecord || InterventionRecord[0].length === 0) {
                 vehicleInfoDiv.innerHTML = '<p>Aucun historique trouvé pour ce VIN.</p>';
                 return;
             }
 
+            //Affichage du tableau de l'historique
             let html = '<h2>Historique des interventions :</h2>';
             html += '<table>';
             html += '<thead><tr><th>Date</th><th>Garagiste</th><th>Titre de l\'intervention</th><th>Description</th></tr></thead><tbody>';
 
+            //Déclaration +Initialisation
             const timestamps = InterventionRecord[0];
             const titles = InterventionRecord[1];
             const descriptions = InterventionRecord[2];
             const firstNameGaragiste = InterventionRecord[3];
             const lastNameGaragiste = InterventionRecord[4];
 
+            //Remplissage du tableau
             for (let i = 0; i < titles.length; i++) {
                 const date = new Date(timestamps[i] * 1000).toLocaleDateString('fr-FR');
                 html += `<tr><td>${date}</td><td>${firstNameGaragiste[i]} ${lastNameGaragiste[i]}</td><td>${titles[i]}</td><td>${descriptions[i]}</td></tr>`;

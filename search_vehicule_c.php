@@ -137,32 +137,34 @@ $lastNameConcessionnaire = $_SESSION['PROFILE']['nom'];
             }
         }
 
-        // Fonction pour afficher les informations du véhicule
+        // Fonction pour afficher les informations du véhicule : le concessionnaire ne voit que historique du kilométrage
         function displayVehicleInfo(mileageHistory) {
             const vehicleInfoDiv = document.getElementById('vehicleInfo');
+            //Vérification si historique pour véhicule
             if (!mileageHistory || Object.keys(mileageHistory).length === 0) {
                 vehicleInfoDiv.innerHTML = '<p>Aucun historique trouvé pour ce VIN.</p>';
                 return;
             }
 
+            //Initialisation tableau pour mise en forme
             let html = '<h2>Historique des kilométrages :</h2>';
             html += '<table>';
             html += '<thead><tr><th>Date</th><th>Kilométrage</th></tr></thead><tbody>';
 
+            //Initialisation valeurs
             const mileages = mileageHistory[0];
             const timestamps = mileageHistory[1];
             const creationTime = mileageHistory[2];
             const firstNameConcessionnaire = mileageHistory[3];
             const lastNameConcessionnaire = mileageHistory[4];
 
-            if (!mileages || !timestamps || mileages.length === 0 || timestamps.length === 0) {
-                vehicleInfoDiv.innerHTML = '<p>Aucun historique trouvé pour ce VIN.</p>';
-                return;
-            }
-
+            //Date de la mise en circulation du véhicule
             html += `<p><strong>Date de la première vente du véhicule :</strong> ${new Date(creationTime * 1000).toLocaleDateString('fr-FR')}</p>`;
+            
+            //Concessionnaire ayant enregistré le véhicule
             html += `<p><strong>Concessionnaire ayant enregistré le véhicule :</strong> ${firstNameConcessionnaire} ${lastNameConcessionnaire}</p>`;
 
+           //Parcours du tableau kilométrage pour le mettre dans le tableau html
             for (let i = 0; i < mileages.length; i++) {
                 const date = new Date(timestamps[i] * 1000).toLocaleDateString('fr-FR');
                 html += `<tr><td>${date}</td><td>${mileages[i]}</td></tr>`;

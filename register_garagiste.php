@@ -91,7 +91,7 @@ $lastNameGaragiste = $_SESSION['PROFILE']['nom'];
             event.preventDefault();
 
             let contract;
-            const contractAddress = '0x81EFCe92D6FB25CcDaB6e3BaE3A090EE1676e138'; // Assurez-vous que cette adresse est correcte
+            const contractAddress = '0x81EFCe92D6FB25CcDaB6e3BaE3A090EE1676e138'; // Adresse du contrat ! Ne pas oublier de la modifier si contrat redéployer ><
             if (typeof window.ethereum !== 'undefined' || typeof window.web3 !== 'undefined') {
                 window.web3 = new Web3(window.ethereum || window.web3.currentProvider);
                 console.log('Web3 initialized with Ethereum provider');
@@ -102,28 +102,25 @@ $lastNameGaragiste = $_SESSION['PROFILE']['nom'];
                 contract = new window.web3.eth.Contract(abi, contractAddress);
             }
 
+            //Récupération des valeurs du formulaire
             const vin = document.getElementById('vin').value;
             const title = document.getElementById('title').value;
-            const dateIntervention = Math.floor(new Date(document.getElementById('dateIntervention').value).getTime() / 1000); // Convertir en timestamp Unix
+            const dateIntervention = Math.floor(new Date(document.getElementById('dateIntervention').value).getTime() / 1000); // Convertir en timestamp 
             const description = document.getElementById('description').value;
             const firstNameGaragiste = document.getElementById('firstNameGaragiste').value;
             const lastNameGaragiste = document.getElementById('lastNameGaragiste').value;
 
-            console.log('VIN:', vin);
-            console.log('Titre:', title);
-            console.log('Date (timestamp):', dateIntervention);
-            console.log('Description:', description);
-            console.log('First Name G:', firstNameGaragiste);
-            console.log('Last Name G:', lastNameGaragiste);
+            
+            //Ajout à la blockachain
 
             try {
                 const accounts = await window.web3.eth.getAccounts();
                 console.log('Accounts:', accounts);
 
                 // Enregistrement de l'intervention pour le véhicule avec le VIN
-                console.log('Registering intervention for car with VIN:', vin);
+                //Utilisation de la fonction addIntervention du smart Contract
                 await contract.methods.addIntervention(vin, dateIntervention, title, description, firstNameGaragiste, lastNameGaragiste).send({ from: accounts[0], gas: 672280 });
-                console.log('Intervention registered successfully');
+                //Fenêtre indiquant succès
                 alert('Intervention mise à jour avec succès sur la blockchain.');
 
             } catch (error) {

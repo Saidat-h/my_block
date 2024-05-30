@@ -102,7 +102,7 @@ $lastNameConcessionnaire = $_SESSION['PROFILE']['nom'];
             const vin = document.getElementById('vin').value;
             const mileage = document.getElementById('kilometrage').value;
             const creationDate = Math.floor(new Date(document.getElementById('creationDate').value).getTime() / 1000); // Convertir en timestamp 
-            const currentDate = Math.floor(Date.now() / 1000); // Timestamp actuel en secondes
+            const currentDate = Math.floor(Date.now() / 1000); // Date d'enregistrement  en secondes
             const firstNameConcessionnaire = document.getElementById('firstNameConcessionnaire').value;
             const lastNameConcessionnaire = document.getElementById('lastNameConcessionnaire').value;
             const ajouterAleatoirement = document.getElementById('ajouterAleatoirement').checked;
@@ -134,11 +134,11 @@ $lastNameConcessionnaire = $_SESSION['PROFILE']['nom'];
             let timestamp = registrationTime; //Valeur initiale 
             console.log(mileage);
             for (let i = 0; i < semainesDansAnnee; i++) {
-                // Générer un kilométrage aléatoire entre 0 et 1000
+                // Générer un kilométrage aléatoire entre 0 et 1001
                 let randomIncrement = Math.floor(Math.random() * 1001);
                 // Convertir la chaîne de caractères mileage en entier, puis ajouter l'incrémentation aléatoire
                 let newMileage = parseInt(mileage) + parseInt(randomIncrement);
-                // Calculer le nouveau timestamp en ajoutant une semaine au timestamp précédent
+                // Calculer le nouveau timestamp en ajoutant une semaine au timestamp précédent (7j*24h*60min*60s)
                 timestamp += (7 * 24 * 60 * 60);
                 // Appeler la fonction updateMileage avec le nouveau kilométrage
                 await contract.methods.updateMileage(vin, newMileage, timestamp).send({ from: accounts[0], gas: 672280 });
