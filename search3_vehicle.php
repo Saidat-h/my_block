@@ -115,45 +115,46 @@
     </div>
 
     <script>
-        // Initialiser web3
+        /* Initialisation de web3 : on utilise les injections "window.ethereum" et "window.web3" pour vérifier s'il y a bien
+        une extension de navigateur qui fournit un réseau Ethereum comme Metamask, Ganache, ... */
         if (typeof window.ethereum !== 'undefined' || typeof window.web3 !== 'undefined') {
-            window.web3 = new Web3(window.ethereum || window.web3.currentProvider);
+            window.web3 = new Web3(window.ethereum || window.web3.currentProvider); // Si la condition est vérifée, web3 s'initialisera avec currentProvider
         } else {
-            window.web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:7545'));
+            window.web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:7545')); // Sinon, avec localhost:7545
         }
 
-        // Adresse du contrat CarRegistry
-        const contractAddress = '0x81EFCe92D6FB25CcDaB6e3BaE3A090EE1676e138';
-        const contract = new window.web3.eth.Contract(abi, contractAddress);
-        let chart = null;
-        let currentVin = '';
+        // Adresse et ABI du smart contrat : étape essentielle pour intéragir avec le smart contract !
+        const contractAddress = '0x81EFCe92D6FB25CcDaB6e3BaE3A090EE1676e138'; 
+        const contract = new window.web3.eth.Contract(abi, contractAddress); // ces deux éléments sont disponibles sur Ganache
+        let chart = null; // Initialisation de la variable "chart" qui contiendra le graphique des mileages"
+        let currentVin = ''; // Déclaration d'une liste de caractères pour stocker le vin du véhicule
 
-        // Gérer le formulaire de recherche
+        // Gestion du formulaire de recherche
         document.getElementById('searchForm').addEventListener('submit', function(event) {
-            event.preventDefault();
+            event.preventDefault(); //empêche la page de se recharger lorsque l'utilisateur soumet le formulaire
             const vin = document.getElementById('vin').value.trim();
-            if (vin.length === 0) {
-                alert('Veuillez entrer un VIN valide.');
+            if (vin.length === 0) { // On vérifie si l'utilisateur a bien saisi un "vin" et que la chaine de caractères n'est pas vide
+                alert('Veuillez entrer un VIN valide.'); // Message qui s'affiche si jamais l'utilisateur ne saisit rien
                 return;
             }
             clearPreviousResults();
-            currentVin = vin; // Store the current VIN for later use
-            searchVehicle(vin);
+            currentVin = vin; // On stocke le vin dans la variable (chaîne de caractères initialisée plus haut) pour plutard
+            searchVehicle(vin); //Recherche du véhicule à partir du vin
         });
 
-        // Fonction pour effacer les résultats précédents
-        function clearPreviousResults() {
+        // On efface les résultats précédents pour que l'utilisateur puisse chercher les infos d'un autre véhicule
+        function clearPreviousResults() { //Création de la fonction
             document.getElementById('vehicleInfo').innerHTML = '';
             if (chart) {
-                chart.destroy();
+                chart.destroy(); //on détruit le graphique pour l'adapter aux informations suivantes
             }
             document.getElementById('repairsContent').innerHTML = '';
         }
 
-        // Fonction pour afficher les informations du véhicule
-        function displayVehicleInfo(mileageHistory) {
-            const vehicleInfoDiv = document.getElementById('vehicleInfo');
-            if (!mileageHistory || Object.keys(mileageHistory).length === 0) {
+        // On affiche les informations du véhicule
+        function displayVehicleInfo(mileageHistory) { //Création de la fonction "displayVehiculeInfo" qui prend en argument "mileageHistory" et affiche l'historique du kilométrage 
+            const vehicleInfoDiv = document.getElementById('vehicleInfo'); //On stocke les infos dans la variable
+            if (!mileageHistory || Object.keys(mileageHistory).length === 0) { // On vérifie si le tableau est vide 
                 vehicleInfoDiv.innerHTML = '<p>Aucun historique trouvé pour ce VIN.</p>';
                 return;
             }
