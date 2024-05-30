@@ -101,47 +101,37 @@ $lastNameConcessionnaire = $_SESSION['PROFILE']['nom'];
 
             const vin = document.getElementById('vin').value;
             const mileage = document.getElementById('kilometrage').value;
-            const creationDate = Math.floor(new Date(document.getElementById('creationDate').value).getTime() / 1000); // Convertir en timestamp Unix
+            const creationDate = Math.floor(new Date(document.getElementById('creationDate').value).getTime() / 1000); // Convertir en timestamp 
             const currentDate = Math.floor(Date.now() / 1000); // Timestamp actuel en secondes
             const firstNameConcessionnaire = document.getElementById('firstNameConcessionnaire').value;
             const lastNameConcessionnaire = document.getElementById('lastNameConcessionnaire').value;
             const ajouterAleatoirement = document.getElementById('ajouterAleatoirement').checked;
-
-            console.log('VIN:', vin);
-            console.log('Mileage:', mileage);
-            console.log('Creation Date (timestamp):', creationDate);
-            console.log('Current Date (timestamp):', currentDate);
-            console.log('First Name Concessionnaire:', firstNameConcessionnaire);
-            console.log('Last Name Concessionnaire:', lastNameConcessionnaire);
-
+ 
             try {
                 const accounts = await window.web3.eth.getAccounts();
                 console.log('Accounts:', accounts);
 
                 // Enregistrement de la voiture avec le VIN, le kilométrage, la date actuelle, la date de création et les informations du concessionnaire
-                console.log('Registering car with VIN:', vin);
                 await contract.methods.registerCar(vin, mileage, currentDate, creationDate, firstNameConcessionnaire, lastNameConcessionnaire).send({ from: accounts[0], gas: 672280 });
                 console.log('Car registered successfully');
                 alert('Véhicule enregistré avec succès sur la blockchain.');
 
                 if (ajouterAleatoirement) {
-                    // Si la case à cocher est cochée, utilisez la fonction pour générer le kilométrage aléatoire
+                    // Si la case à cocher est cochée, génération du kilométrage aléatoire
                     await genererEnregistrementsKilometrage(vin, mileage, currentDate, contract, accounts);
                     alert('Génération du kilométrage réalisée avec succès sur la blockchain.');
-                    console.log('Kilométrage ajouté aléatoirement.');
-                } else {
-                    console.log('Kilométrage non ajouté aléatoirement.');
-                }
+                } 
             } catch (error) {
                 console.error('Erreur lors de l\'enregistrement du véhicule :', error);
                 alert('Erreur lors de l\'enregistrement du véhicule. Le véhicule est déjà enregistré ou la connexion à la blockchain n\'a pas aboutie');
             }
         });
 
+        //Fonction pour générérer le kilométrage initial
         async function genererEnregistrementsKilometrage(vin, initialMileage, registrationTime, contract, accounts) {
             const semainesDansAnnee = 52; // On considère qu'on fait un relevé par semaine
-            let mileage = initialMileage; // Utilisez le kilométrage initial fourni dans le formulaire
-            let timestamp = registrationTime;
+            let mileage = initialMileage; // Utilisez le kilométrage initial saisi en formulaire (cas où voiture non neuve)
+            let timestamp = registrationTime; //Valeur initiale 
             console.log(mileage);
             for (let i = 0; i < semainesDansAnnee; i++) {
                 // Générer un kilométrage aléatoire entre 0 et 1000
